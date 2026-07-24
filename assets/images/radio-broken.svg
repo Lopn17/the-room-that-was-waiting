@@ -1,0 +1,229 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7a61ad"/>
+      <stop offset="0.55" stop-color="#4e3b76"/>
+      <stop offset="1" stop-color="#2e2347"/>
+    </linearGradient>
+
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a203d"/>
+      <stop offset="1" stop-color="#130f21"/>
+    </linearGradient>
+
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d6c6ef"/>
+      <stop offset="0.5" stop-color="#74668c"/>
+      <stop offset="1" stop-color="#eee4ff"/>
+    </linearGradient>
+
+    <radialGradient id="glass" cx="42%" cy="35%" r="80%">
+      <stop offset="0" stop-color="#d8c8ff" stop-opacity=".75"/>
+      <stop offset=".35" stop-color="#8069aa" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#241a37" stop-opacity=".95"/>
+    </radialGradient>
+
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#080512" flood-opacity=".68"/>
+    </filter>
+
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- floor shadow -->
+  <ellipse cx="161" cy="198" rx="112" ry="15" fill="#080611" opacity=".5"/>
+
+  <!-- broken antenna -->
+  <path d="M241 57 269 23 282 34 303 8"
+        fill="none"
+        stroke="#21182f"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <path d="M241 56 269 23 282 34 303 8"
+        fill="none"
+        stroke="url(#metal)"
+        stroke-width="5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+  <path d="M278 30 288 22"
+        stroke="#f1e5ff"
+        stroke-width="3"
+        stroke-linecap="round"
+        opacity=".65"/>
+
+  <!-- handle -->
+  <path d="M82 65V42c0-13 10-23 23-23h109c13 0 23 10 23 23v23"
+        fill="none"
+        stroke="#21172f"
+        stroke-width="20"
+        stroke-linecap="round"/>
+  <path d="M82 65V42c0-13 10-23 23-23h109c13 0 23 10 23 23v23"
+        fill="none"
+        stroke="#6c5597"
+        stroke-width="11"
+        stroke-linecap="round"/>
+
+  <!-- main radio body -->
+  <g filter="url(#shadow)">
+    <rect x="34" y="58" width="252" height="132" rx="22"
+          fill="url(#body)"
+          stroke="#bca7de"
+          stroke-width="5"/>
+
+    <!-- chipped corners -->
+    <path d="M34 91 49 76 34 72Z" fill="#21172f"/>
+    <path d="M286 146 271 161 286 170Z" fill="#21172f"/>
+
+    <!-- top trim -->
+    <path d="M54 72H266"
+          stroke="#cbb8ea"
+          stroke-width="4"
+          stroke-linecap="round"
+          opacity=".45"/>
+
+    <!-- left speaker panel -->
+    <rect x="51" y="82" width="113" height="88" rx="14"
+          fill="url(#panel)"
+          stroke="#8d74b6"
+          stroke-width="4"/>
+
+    <!-- speaker grille -->
+    <circle cx="107" cy="126" r="35"
+            fill="#171124"
+            stroke="#76619a"
+            stroke-width="4"/>
+
+    <circle cx="107" cy="126" r="27"
+            fill="none"
+            stroke="#45345f"
+            stroke-width="3"/>
+
+    <g fill="#9c86bd" opacity=".78">
+      <circle cx="91" cy="108" r="3.2"/>
+      <circle cx="103" cy="105" r="3.2"/>
+      <circle cx="116" cy="106" r="3.2"/>
+      <circle cx="127" cy="113" r="3.2"/>
+
+      <circle cx="85" cy="120" r="3.2"/>
+      <circle cx="98" cy="118" r="3.2"/>
+      <circle cx="111" cy="118" r="3.2"/>
+      <circle cx="124" cy="121" r="3.2"/>
+
+      <circle cx="84" cy="134" r="3.2"/>
+      <circle cx="97" cy="133" r="3.2"/>
+      <circle cx="111" cy="133" r="3.2"/>
+      <circle cx="125" cy="135" r="3.2"/>
+
+      <circle cx="90" cy="146" r="3.2"/>
+      <circle cx="103" cy="149" r="3.2"/>
+      <circle cx="117" cy="148" r="3.2"/>
+    </g>
+
+    <!-- damaged speaker slash -->
+    <path d="M86 149 96 136 91 127 105 114 99 104"
+          fill="none"
+          stroke="#d8c8f3"
+          stroke-width="3.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          opacity=".9"/>
+
+    <!-- display -->
+    <rect x="179" y="83" width="85" height="43" rx="8"
+          fill="url(#glass)"
+          stroke="#b59ad5"
+          stroke-width="4"/>
+
+    <!-- tuning scale -->
+    <path d="M190 108h62"
+          stroke="#d9c9ef"
+          stroke-width="2.5"
+          opacity=".8"/>
+
+    <g stroke="#cab7e4" stroke-width="2" opacity=".7">
+      <path d="M195 101v14"/>
+      <path d="M207 104v9"/>
+      <path d="M219 101v14"/>
+      <path d="M231 104v9"/>
+      <path d="M243 101v14"/>
+    </g>
+
+    <!-- dead/static indicator -->
+    <path d="M188 94 196 100 204 92 212 101 220 94 228 100 237 91 247 99 256 93"
+          fill="none"
+          stroke="#e7d9ff"
+          stroke-width="2.3"
+          opacity=".72"/>
+
+    <!-- cracked glass -->
+    <path d="M226 85 220 96 227 103 219 112 224 124"
+          fill="none"
+          stroke="#eee5ff"
+          stroke-width="2.4"
+          stroke-linecap="round"/>
+    <path d="M220 96 212 91M227 103l10-6M219 112l-9 7"
+          fill="none"
+          stroke="#eee5ff"
+          stroke-width="2"
+          stroke-linecap="round"/>
+
+    <!-- knobs -->
+    <circle cx="190" cy="150" r="16"
+            fill="#21172e"
+            stroke="#b59bd7"
+            stroke-width="4"/>
+    <circle cx="190" cy="150" r="8"
+            fill="#5c477f"/>
+    <path d="M190 150 196 142"
+          stroke="#e1d4f4"
+          stroke-width="3"
+          stroke-linecap="round"/>
+
+    <!-- broken knob -->
+    <path d="M234 137
+             a15 15 0 1 1-12 25
+             l8-7
+             -7-8
+             z"
+          fill="#21172e"
+          stroke="#a888ca"
+          stroke-width="4"/>
+    <path d="M235 137 244 130"
+          stroke="#3b2a52"
+          stroke-width="5"
+          stroke-linecap="round"/>
+
+    <!-- scratches -->
+    <g stroke="#d7c9ec" stroke-width="2.4" stroke-linecap="round" opacity=".42">
+      <path d="M54 178 76 161"/>
+      <path d="M63 181 83 167"/>
+      <path d="M257 73 270 83"/>
+      <path d="M251 74 265 87"/>
+    </g>
+
+    <!-- loose wire -->
+    <path d="M52 159c-21 11-23 27-5 32 13 4 22-4 17-13"
+          fill="none"
+          stroke="#23182f"
+          stroke-width="5"
+          stroke-linecap="round"/>
+    <circle cx="63" cy="178" r="4" fill="#c7b4df"/>
+  </g>
+
+  <!-- faint haunted pulse -->
+  <path d="M183 102h9l5-7 7 15 7-9 7 4"
+        fill="none"
+        stroke="#d5c0f4"
+        stroke-width="2.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        opacity=".35"
+        filter="url(#softGlow)"/>
+</svg>

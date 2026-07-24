@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Maeghan's Doll — A Tiny Friend</title>
+  <link rel="icon" type="image/svg+xml" href="assets/boneka/assets/images/doll.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:      #f3eefc;
+      --ink-soft: #b9aed6;
+      --lilac:    #cbb8ff;
+      --pink:     #f2a9be;
+      --panel:    rgba(255, 255, 255, 0.035);
+      --line:     rgba(203, 184, 255, 0.16);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Quicksand", "Segoe UI", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1100px 600px at 78% 18%, rgba(172, 146, 238, 0.16), transparent 60%),
+        radial-gradient(900px 560px at 14% 82%, rgba(242, 169, 190, 0.10), transparent 60%),
+        linear-gradient(180deg, #211939 0%, #171126 55%, #141021 100%);
+      overflow-x: hidden;
+    }
+
+    /* twinkling star field */
+    .stars, .stars::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 22%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 28% 68%, #f5c8dc, transparent),
+        radial-gradient(1.5px 1.5px at 44% 12%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 61% 42%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 73% 78%, #f5c8dc, transparent),
+        radial-gradient(1px 1px at 86% 26%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 92% 62%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 8% 88%, #e9dfff, transparent);
+      animation: twinkle 4.5s ease-in-out infinite;
+    }
+    .stars::after {
+      background-image:
+        radial-gradient(1px 1px at 18% 46%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 36% 86%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 52% 58%, #f5c8dc, transparent),
+        radial-gradient(1.5px 1.5px at 68% 14%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 81% 92%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 95% 40%, #f5c8dc, transparent);
+      animation-delay: 2.2s;
+    }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.35; }
+      50%      { opacity: 0.9; }
+    }
+
+    .back-link {
+      position: fixed;
+      top: 26px;
+      left: 28px;
+      z-index: 5;
+      padding: 10px 20px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(23, 17, 38, 0.6);
+      backdrop-filter: blur(8px);
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back-link:hover, .back-link:focus-visible { color: var(--ink); border-color: var(--lilac); }
+
+    .page-shell {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 96px 24px 48px;
+    }
+
+    .gift-panel {
+      width: min(1120px, 100%);
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(320px, 1.05fr);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: center;
+      padding: clamp(32px, 5vw, 64px);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: 0 30px 80px rgba(9, 6, 20, 0.55);
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--pink);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(44px, 6.5vw, 78px);
+      line-height: 1.02;
+      letter-spacing: -0.01em;
+      margin-bottom: 22px;
+    }
+
+    .lead {
+      color: var(--ink-soft);
+      font-size: 16.5px;
+      line-height: 1.65;
+      max-width: 42ch;
+      margin-bottom: 30px;
+    }
+
+    .action-button {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 30px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: #241b3e;
+      background: linear-gradient(100deg, #f5c8dc, #cbb8ff);
+      box-shadow: 0 10px 30px rgba(203, 184, 255, 0.25);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      text-align: center;
+      text-decoration: none;
+    }
+    .action-button:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(203, 184, 255, 0.4); }
+    .action-button:active { transform: translateY(0); }
+    .action-button:focus-visible { outline: 2px solid var(--lilac); outline-offset: 3px; }
+    .action-button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .download-actions {
+      display: grid;
+      gap: 11px;
+      width: min(100%, 410px);
+    }
+
+    .action-button.secondary-download {
+      color: #f3eefc;
+      background: rgba(203, 184, 255, 0.09);
+      border: 1px solid rgba(219, 205, 255, 0.24);
+      box-shadow: 0 10px 26px rgba(9, 6, 20, 0.22);
+    }
+
+    .action-button.secondary-download:hover {
+      border-color: rgba(229, 218, 255, 0.52);
+      box-shadow: 0 14px 34px rgba(172, 146, 238, 0.2);
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      opacity: 0.85;
+      max-width: 40ch;
+    }
+    .note code {
+      font-size: 12px;
+      background: rgba(203, 184, 255, 0.12);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    /* --- 3D stage --- */
+    .visual-stage { display: grid; place-items: center; }
+
+    .doll-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 4.6;
+      max-height: 620px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(430px 350px at 50% 40%, rgba(229, 219, 255, 0.32), transparent 69%),
+        radial-gradient(340px 280px at 50% 70%, rgba(242, 169, 190, 0.14), transparent 72%),
+        linear-gradient(180deg, rgba(65, 49, 101, 0.88), rgba(38, 28, 63, 0.92));
+      box-shadow:
+        inset 0 0 85px rgba(224, 211, 255, 0.08),
+        0 24px 65px rgba(9, 6, 20, 0.34);
+      cursor: grab;
+      touch-action: none;
+    }
+    .doll-card.grabbing { cursor: grabbing; }
+
+    .doll-card canvas {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+
+    .doll-fallback {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 68%;
+      max-height: 86%;
+      object-fit: contain;
+    }
+
+    .stage-hint {
+      position: absolute;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      color: var(--ink-soft);
+      opacity: 0.8;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+      white-space: nowrap;
+    }
+    .stage-hint.fade-out { opacity: 0; }
+
+    @media (max-width: 880px) {
+      .gift-panel { grid-template-columns: 1fr; }
+      .visual-stage { order: -1; }
+      .doll-card { max-height: 440px; }
+      .page-shell { padding-top: 86px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stars, .stars::after { animation: none; opacity: 0.5; }
+      .action-button, .back-link { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+  <a class="back-link" href="index.html" onclick="backToRoom()">← BACK TO THE ROOM</a>
+
+  <main class="page-shell">
+    <section class="gift-panel">
+      <div class="gift-copy">
+        <p class="eyebrow">GIFT 01</p>
+        <h1>A tiny<br />friend.</h1>
+        <p class="lead">She lives right here now — grab her and spin her around, she likes it. When she's posed just the way you want, save her as your wallpaper.</p>
+        <div class="download-actions">
+          <button class="action-button" type="button" id="wallpaper-btn">DOWNLOAD 3D WALLPAPER</button>
+          <a class="action-button secondary-download" href="assets/images/doll.svg" download="maeghan-doll-2d.svg">DOWNLOAD DOLL SVG</a>
+          <a class="action-button secondary-download" href="assets/images/background-doll-2d.png" download="maeghan-doll-background-2d.png">DOWNLOAD 2D BACKGROUND</a>
+        </div>
+        <p class="note">Save the live 3D pose as a 1920×1080 wallpaper, or download the ready-made doll and 2D background separately.</p>
+      </div>
+
+      <div class="visual-stage">
+        <div class="doll-card" id="doll-stage">
+          <canvas id="doll-canvas"></canvas>
+          <img class="doll-fallback" id="doll-fallback" src="assets/boneka/assets/images/doll.svg" alt="A small doll with dark hair and a lavender dress" hidden />
+          <p class="stage-hint" id="stage-hint">DRAG TO SPIN&nbsp;&nbsp;✦</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bundled build: works with file:// double-click AND with Live Server -->
+  <script defer src="assets/boneka/assets/js/doll3d.bundle.js?v=doll-rework-11"></script>
+  <script>
+    function backToRoom() {
+      // Kalau halaman ini dibuka dari tab kamar utama
+      if (window.opener && !window.opener.closed) {
+        window.opener.focus();
+        window.close();
+        return;
+      }
+
+      // Fallback kalau halaman dibuka langsung
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

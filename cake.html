@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>Maeghan's Cake — Make a Wish</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" type="image/svg+xml" href="assets/images/cake.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink:      #f3eefc;
+      --ink-soft: #b9aed6;
+      --lilac:    #cbb8ff;
+      --pink:     #f2a9be;
+      --panel:    rgba(255, 255, 255, 0.035);
+      --line:     rgba(203, 184, 255, 0.16);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: "Quicksand", "Segoe UI", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1100px 600px at 78% 18%, rgba(172, 146, 238, 0.16), transparent 60%),
+        radial-gradient(900px 560px at 14% 82%, rgba(242, 169, 190, 0.10), transparent 60%),
+        linear-gradient(180deg, #211939 0%, #171126 55%, #141021 100%);
+      overflow-x: hidden;
+    }
+
+    /* twinkling star field */
+    .stars, .stars::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 22%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 28% 68%, #f5c8dc, transparent),
+        radial-gradient(1.5px 1.5px at 44% 12%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 61% 42%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 73% 78%, #f5c8dc, transparent),
+        radial-gradient(1px 1px at 86% 26%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 92% 62%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 8% 88%, #e9dfff, transparent);
+      animation: twinkle 4.5s ease-in-out infinite;
+    }
+    .stars::after {
+      background-image:
+        radial-gradient(1px 1px at 18% 46%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 36% 86%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 52% 58%, #f5c8dc, transparent),
+        radial-gradient(1.5px 1.5px at 68% 14%, #e9dfff, transparent),
+        radial-gradient(1px 1px at 81% 92%, #e9dfff, transparent),
+        radial-gradient(1.5px 1.5px at 95% 40%, #f5c8dc, transparent);
+      animation-delay: 2.2s;
+    }
+    @keyframes twinkle { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+
+    .back-link {
+      position: fixed;
+      top: 26px; left: 28px;
+      z-index: 5;
+      padding: 10px 20px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(23, 17, 38, 0.6);
+      backdrop-filter: blur(8px);
+      color: var(--ink-soft);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .back-link:hover, .back-link:focus-visible { color: var(--ink); border-color: var(--lilac); }
+
+    .page-shell {
+      min-height: 100vh;
+      display: grid; place-items: center;
+      padding: 96px 24px 48px;
+    }
+
+    .gift-panel {
+      width: min(1120px, 100%);
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(320px, 1.05fr);
+      gap: clamp(28px, 5vw, 64px);
+      align-items: center;
+      padding: clamp(32px, 5vw, 64px);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--panel);
+      box-shadow: 0 30px 80px rgba(9, 6, 20, 0.55);
+    }
+
+    .eyebrow {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.3em;
+      color: var(--pink);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-family: "Fraunces", Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(44px, 6.5vw, 78px);
+      line-height: 1.02; letter-spacing: -0.01em;
+      margin-bottom: 22px;
+    }
+
+    .lead {
+      color: var(--ink-soft);
+      font-size: 16.5px; line-height: 1.65;
+      max-width: 42ch;
+      margin-bottom: 30px;
+    }
+
+    .action-button {
+      appearance: none; border: 0; cursor: pointer;
+      padding: 16px 30px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.16em;
+      color: #241b3e;
+      background: linear-gradient(100deg, #f5c8dc, #cbb8ff);
+      box-shadow: 0 10px 30px rgba(203, 184, 255, 0.25);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .action-button:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(203, 184, 255, 0.4); }
+    .action-button:active { transform: translateY(0); }
+    .action-button:focus-visible { outline: 2px solid var(--lilac); outline-offset: 3px; }
+
+    .note {
+      margin-top: 20px;
+      font-size: 13.5px; line-height: 1.6;
+      color: var(--ink-soft);
+      min-height: 1.6em;
+    }
+
+    /* ------------------ cake stage ------------------ */
+    .visual-stage { display: grid; place-items: center; }
+
+    .cake-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 4.6;
+      max-height: 620px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(380px 300px at 50% 46%, rgba(172, 146, 238, 0.14), transparent 70%),
+        rgba(13, 10, 26, 0.35);
+      display: grid;
+      place-items: center;
+      padding: 24px 18px 18px;
+    }
+
+    .cake-svg { width: min(100%, 400px); height: auto; display: block; }
+
+    .cake-message {
+      position: absolute;
+      left: 50%; bottom: 18px;
+      transform: translateX(-50%);
+      font-family: "Fraunces", Georgia, serif;
+      font-style: italic;
+      font-size: 15px;
+      color: var(--ink-soft);
+      white-space: nowrap;
+      opacity: 0.9;
+    }
+
+    /* floating ambience inside the stage */
+    .floaty {
+      position: absolute;
+      font-size: 15px;
+      color: var(--lilac);
+      opacity: 0.55;
+      pointer-events: none;
+      animation: floaty 5s ease-in-out infinite;
+    }
+    .floaty.pink { color: var(--pink); }
+    .f1 { top: 14%; left: 12%; animation-delay: 0s; }
+    .f2 { top: 22%; right: 12%; animation-delay: 1.3s; font-size: 12px; }
+    .f3 { bottom: 26%; left: 9%;  animation-delay: 2.1s; font-size: 12px; }
+    .f4 { top: 46%;  right: 8%;  animation-delay: 3s; }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50%      { transform: translateY(-12px) rotate(5deg); }
+    }
+
+    /* --- SVG part animations --- */
+    .eye-open {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: blink 4.4s ease-in-out infinite;
+    }
+    .eye-open.right { animation-delay: 0.05s; }
+    @keyframes blink {
+      0%, 91%, 100% { transform: scaleY(1); }
+      94%           { transform: scaleY(0.08); }
+      97%           { transform: scaleY(1); }
+    }
+
+    .eyes-closed { opacity: 0; transition: opacity 0.25s; }
+    .cute-cake.out .eyes-closed { opacity: 1; }
+    .cute-cake.out .eye-open,
+    .cute-cake.out .eye-open + .eye-shine { opacity: 0; }
+    .eye-open, .eye-shine { transition: opacity 0.25s; }
+
+    .flame-fire {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: flick 0.34s ease-in-out infinite alternate;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    @keyframes flick {
+      from { transform: scaleY(1)    rotate(-2.5deg); }
+      to   { transform: scaleY(1.14) rotate(3deg); }
+    }
+    .flame-glow {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: glowpulse 1.6s ease-in-out infinite;
+      transition: opacity 0.4s ease;
+    }
+    @keyframes glowpulse {
+      0%, 100% { transform: scale(1);    opacity: 0.9; }
+      50%      { transform: scale(1.15); opacity: 0.65; }
+    }
+    .cute-cake.out .flame-fire { animation: none; transform: scale(0.15); opacity: 0; }
+    .cute-cake.out .flame-glow { animation: none; opacity: 0; }
+
+    .smoke { opacity: 0; transform-box: fill-box; }
+    .cute-cake.out .smoke  { animation: rise 1.5s ease-out forwards; }
+    .cute-cake.out .smoke.s2 { animation-delay: 0.18s; }
+    .cute-cake.out .smoke.s3 { animation-delay: 0.36s; }
+    @keyframes rise {
+      0%   { opacity: 0;   transform: translateY(0)    translateX(0); }
+      18%  { opacity: 0.75; }
+      100% { opacity: 0;   transform: translateY(-72px) translateX(8px); }
+    }
+
+    .cute-cake { cursor: default; }
+    #flame { cursor: pointer; }
+
+    /* confetti */
+    .confetti {
+      position: absolute;
+      left: 50%; top: 36%;
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      pointer-events: none;
+      animation: pop 1.15s ease-out forwards;
+    }
+    .confetti.glyph {
+      background: transparent !important;
+      width: auto; height: auto;
+      font-size: 14px;
+      color: var(--pink);
+    }
+    @keyframes pop {
+      from { transform: translate(-50%, -50%) rotate(0deg);   opacity: 1; }
+      to   { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(320deg); opacity: 0; }
+    }
+
+    @media (max-width: 880px) {
+      .gift-panel { grid-template-columns: 1fr; }
+      .visual-stage { order: -1; }
+      .cake-stage { max-height: 460px; }
+      .page-shell { padding-top: 86px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stars, .stars::after, .floaty, .eye-open, .flame-fire, .flame-glow { animation: none; }
+      .stars, .stars::after { opacity: 0.5; }
+      .action-button, .back-link { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+  <a class="back-link" href="index.html" onclick="backToRoom()">← BACK TO THE ROOM</a>
+
+  <main class="page-shell">
+    <section class="gift-panel">
+      <div class="gift-copy">
+        <p class="eyebrow">GIFT 02</p>
+        <h1>Make<br />a wish.</h1>
+        <p class="lead">Click the flame to blow out the candle. Don't tell anyone the wish — especially the hallway ghost. She talks too much.</p>
+        <button id="blowButton" class="action-button" type="button">BLOW THE CANDLE</button>
+        <p id="wishText" class="note">The candle is still waiting.</p>
+      </div>
+
+      <div class="visual-stage">
+        <div class="cake-stage" id="cakeStage">
+          <span class="floaty f1" aria-hidden="true">♡</span>
+          <span class="floaty pink f2" aria-hidden="true">✦</span>
+          <span class="floaty f3" aria-hidden="true">✦</span>
+          <span class="floaty pink f4" aria-hidden="true">♡</span>
+
+          <svg class="cake-svg cute-cake" id="cake" viewBox="0 0 360 400" role="img" aria-label="A cute two-layer cake with a face and a lit candle">
+            <defs>
+              <radialGradient id="flameGlowGrad">
+                <stop offset="0"  stop-color="#FFD68C" stop-opacity="0.55" />
+                <stop offset="1"  stop-color="#FFD68C" stop-opacity="0" />
+              </radialGradient>
+              <linearGradient id="plateGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop stop-color="#EFE7FF" /><stop offset="1" stop-color="#D4C6F5" />
+              </linearGradient>
+              <clipPath id="candleClip"><rect x="171" y="142" width="18" height="62" rx="7" /></clipPath>
+            </defs>
+
+            <!-- cake stand -->
+            <ellipse cx="180" cy="374" rx="72" ry="10" fill="#B7A6EA" />
+            <rect x="171" y="342" width="18" height="34" rx="7" fill="#C9BCF0" />
+            <ellipse cx="180" cy="344" rx="112" ry="16" fill="url(#plateGrad)" />
+            <ellipse cx="180" cy="341" rx="100" ry="11" fill="#F5F0FF" />
+
+            <!-- bottom layer -->
+            <rect x="70" y="264" width="220" height="78" rx="16" fill="#F7B8CC" />
+            <rect x="70" y="256" width="220" height="28" rx="14" fill="#FFF3E8" />
+            <circle cx="92"  cy="288" r="10" fill="#FFF3E8" />
+            <circle cx="121" cy="282" r="8"  fill="#FFF3E8" />
+            <circle cx="150" cy="291" r="11" fill="#FFF3E8" />
+            <circle cx="180" cy="283" r="8"  fill="#FFF3E8" />
+            <circle cx="210" cy="292" r="11" fill="#FFF3E8" />
+            <circle cx="240" cy="282" r="8"  fill="#FFF3E8" />
+            <circle cx="268" cy="288" r="10" fill="#FFF3E8" />
+
+            <!-- top layer -->
+            <rect x="105" y="204" width="150" height="62" rx="14" fill="#C9B6F2" />
+            <rect x="105" y="196" width="150" height="24" rx="12" fill="#F7B8CC" />
+            <circle cx="126" cy="224" r="8" fill="#F7B8CC" />
+            <circle cx="152" cy="219" r="6" fill="#F7B8CC" />
+            <circle cx="180" cy="226" r="8" fill="#F7B8CC" />
+            <circle cx="209" cy="219" r="6" fill="#F7B8CC" />
+            <circle cx="234" cy="224" r="8" fill="#F7B8CC" />
+
+            <!-- sprinkles -->
+            <g opacity="0.95">
+              <rect x="98"  y="243" width="7" height="3" rx="1.5" fill="#FFD9A0" transform="rotate(-18 101 244)" />
+              <rect x="255" y="246" width="7" height="3" rx="1.5" fill="#A9E8D8" transform="rotate(14 258 247)" />
+              <rect x="130" y="250" width="7" height="3" rx="1.5" fill="#CBB8FF" transform="rotate(24 133 251)" />
+              <rect x="228" y="252" width="7" height="3" rx="1.5" fill="#F76C8A" transform="rotate(-12 231 253)" />
+              <rect x="118" y="238" width="7" height="3" rx="1.5" fill="#A9E8D8" transform="rotate(8 121 239)" />
+              <rect x="242" y="236" width="7" height="3" rx="1.5" fill="#FFD9A0" transform="rotate(-22 245 237)" />
+              <rect x="140" y="212" width="6" height="3" rx="1.5" fill="#FFD9A0" transform="rotate(-15 143 213)" />
+              <rect x="214" y="210" width="6" height="3" rx="1.5" fill="#A9E8D8" transform="rotate(18 217 211)" />
+            </g>
+
+            <!-- cherries on the top layer -->
+            <path d="M136 188 Q140 176 150 173" fill="none" stroke="#7A5C46" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="135" cy="196" r="10" fill="#F76C8A" />
+            <circle cx="131" cy="192" r="3"  fill="#FFAEC2" />
+            <path d="M226 189 Q223 178 214 175" fill="none" stroke="#7A5C46" stroke-width="2.5" stroke-linecap="round" />
+            <circle cx="227" cy="196" r="9"  fill="#F76C8A" />
+            <circle cx="224" cy="192" r="2.6" fill="#FFAEC2" />
+
+            <!-- candle -->
+            <g clip-path="url(#candleClip)">
+              <rect x="171" y="142" width="18" height="62" fill="#FFF3E8" />
+              <g stroke="#F7B8CC" stroke-width="6">
+                <line x1="150" y1="132" x2="210" y2="192" />
+                <line x1="150" y1="148" x2="210" y2="208" />
+                <line x1="150" y1="164" x2="210" y2="224" />
+                <line x1="150" y1="116" x2="210" y2="176" />
+              </g>
+            </g>
+            <rect x="178.7" y="131" width="2.6" height="13" rx="1.3" fill="#4A3A2A" />
+
+            <!-- smoke (appears when blown out) -->
+            <circle class="smoke s1" cx="180" cy="122" r="5"   fill="#CFC8E6" />
+            <circle class="smoke s2" cx="176" cy="118" r="6.5" fill="#CFC8E6" />
+            <circle class="smoke s3" cx="184" cy="114" r="4.5" fill="#CFC8E6" />
+
+            <!-- flame -->
+            <g id="flame" tabindex="0" role="button" aria-label="Blow out the candle">
+              <circle class="flame-glow" cx="180" cy="116" r="30" fill="url(#flameGlowGrad)" />
+              <g class="flame-fire">
+                <path d="M180 96 C169 110 167 121 180 130 C193 121 191 110 180 96 Z" fill="#FFB25C" />
+                <path d="M180 108 C175 115 175 122 180 126 C185 122 185 115 180 108 Z" fill="#FFE9A8" />
+              </g>
+              <circle cx="180" cy="114" r="26" fill="transparent" />
+            </g>
+
+            <!-- face on the bottom layer -->
+            <g>
+              <ellipse class="eye-open"       cx="150" cy="306" rx="7"  ry="10" fill="#241733" />
+              <circle  class="eye-shine"      cx="147.5" cy="302" r="2.6" fill="#FFFFFF" />
+              <ellipse class="eye-open right" cx="210" cy="306" rx="7"  ry="10" fill="#241733" />
+              <circle  class="eye-shine"      cx="207.5" cy="302" r="2.6" fill="#FFFFFF" />
+
+              <g class="eyes-closed" stroke="#241733" stroke-width="3.6" stroke-linecap="round" fill="none">
+                <path d="M142 307 Q150 298 158 307" />
+                <path d="M202 307 Q210 298 218 307" />
+              </g>
+
+              <ellipse cx="126" cy="316" rx="9.5" ry="5.5" fill="#F78BAB" opacity="0.65" />
+              <ellipse cx="234" cy="316" rx="9.5" ry="5.5" fill="#F78BAB" opacity="0.65" />
+
+              <path d="M173 313 Q180 323 187 313 Z" fill="#A64D5F" />
+            </g>
+          </svg>
+
+          <p class="cake-message">a tiny cute cake ♡</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+
+    function backToRoom() {
+      // Kalau halaman ini dibuka dari tab kamar utama
+      if (window.opener && !window.opener.closed) {
+        window.opener.focus();
+        window.close();
+        return;
+      }
+
+      // Fallback kalau halaman dibuka langsung
+      window.location.href = "index.html";
+    }
+
+    const cake     = document.getElementById('cake');
+    const flame    = document.getElementById('flame');
+    const wishText = document.getElementById('wishText');
+    const blowBtn  = document.getElementById('blowButton');
+    const stageEl  = document.getElementById('cakeStage');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const confettiColors = ['#F5C8DC', '#CBB8FF', '#FFD9A0', '#A9E8D8', '#F76C8A'];
+    let lit = true;
+
+    function burst() {
+      if (reduceMotion) return;
+      for (let i = 0; i < 26; i++) {
+        const s = document.createElement('span');
+        s.className = 'confetti';
+        const a = Math.random() * Math.PI * 2;
+        const d = 60 + Math.random() * 95;
+        s.style.setProperty('--tx', (Math.cos(a) * d).toFixed(1) + 'px');
+        s.style.setProperty('--ty', (Math.sin(a) * d - 45).toFixed(1) + 'px');
+        s.style.background = confettiColors[i % confettiColors.length];
+        s.style.animationDelay = (Math.random() * 0.12).toFixed(2) + 's';
+        if (i % 5 === 0) { s.classList.add('glyph'); s.textContent = '♡'; }
+        stageEl.appendChild(s);
+        setTimeout(() => s.remove(), 1400);
+      }
+    }
+
+    function blow() {
+      if (!lit) return;
+      lit = false;
+      cake.classList.add('out');
+      wishText.textContent = 'Wish saved. May it find its way to you. ♡';
+      blowBtn.textContent = 'LIGHT IT AGAIN';
+      burst();
+    }
+
+    function relight() {
+      lit = true;
+      cake.classList.remove('out');
+      wishText.textContent = 'The candle is lit again — one more wish?';
+      blowBtn.textContent = 'BLOW THE CANDLE';
+    }
+
+    blowBtn.addEventListener('click', () => (lit ? blow() : relight()));
+    flame.addEventListener('click', blow);
+    flame.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); blow(); }
+    });
+  </script>
+</body>
+</html>

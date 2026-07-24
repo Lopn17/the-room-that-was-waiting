@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090713" />
+  <link rel="icon" type="image/svg+xml" href="assets/images/cake.svg" />
+  <title>The Room That Was Waiting for Maeghan</title>
+  <link rel="stylesheet" href="style/main.css?v=credits-2" />
+</head>
+<body>
+  <noscript>This birthday game needs JavaScript enabled.</noscript>
+
+  <div id="game" class="game-shell" aria-live="polite">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <button id="soundToggle" class="sound-toggle" type="button" aria-label="Toggle sound">SOUND: ON</button>
+
+    <div id="inventory" class="inventory" hidden>
+      <span class="inventory-label">INVENTORY</span>
+      <div id="keySlot" class="inventory-slot" title="Old key">
+        <img src="assets/images/key.svg" alt="Old key" />
+      </div>
+    </div>
+
+    <main class="scene-stage">
+      <section id="sceneStart" class="scene scene-start is-active">
+        <div class="start-card">
+          <p class="eyebrow">A small birthday story</p>
+          <h1>The Room That Was Waiting</h1>
+          <p>This experience uses sound. Headphones are highly recommended.</p>
+          <button id="startGame" class="primary-button" type="button">ENTER THE ROOM</button>
+          <small>Made for Maeghan ♡</small>
+        </div>
+      </section>
+
+      <section id="sceneDark" class="scene scene-dark">
+        <div class="dark-pulse" aria-hidden="true"></div>
+        <button id="lightSwitchDark" class="light-switch hotspot hidden" type="button" aria-label="Turn on the light">
+          <span class="bulb">💡</span>
+          <span>TURN ON THE LIGHT</span>
+        </button>
+      </section>
+
+      <section id="sceneBedroom" class="scene scene-bedroom">
+        <div class="room-light"></div>
+        <button id="bedroomDoor" class="door-hotspot hotspot hidden" type="button" aria-label="Open the bedroom door">
+          <img src="assets/images/door.svg" alt="" />
+          <span>OPEN DOOR</span>
+        </button>
+      </section>
+
+      <section id="sceneHaunted" class="scene scene-haunted">
+        <div class="haunted-flicker" aria-hidden="true"></div>
+        <button id="returnRoom" class="primary-button scene-button hidden" type="button">GO BACK. NOW.</button>
+      </section>
+
+      <section id="sceneGiftRoom" class="scene scene-gift-room">
+        <div class="room-light warm"></div>
+
+        <!-- Radio rusak: klik untuk ambience -->
+        <button
+          id="radioItem"
+          class="room-item radio-item"
+          type="button"
+          aria-label="Turn on the broken radio"
+          aria-pressed="false"
+        >
+          <span class="item-glow"></span>
+
+          <img
+            src="assets/images/radio-broken.svg"
+            alt="Broken radio"
+          />
+
+          <span class="item-label">RADIO</span>
+        </button>
+
+        <!-- Hotspot boneka di rak paling atas -->
+        <a
+          class="room-item doll-item"
+          href="boneka.html"
+          aria-label="Open doll surprise"
+          target="_blank"
+          rel="opener"
+        >
+          <span class="item-glow"></span>
+
+          <!-- Disembunyikan lewat CSS karena sudah ada di bedroom2.png -->
+          <img
+            src="assets/images/doll.svg"
+            alt="Doll"
+          />
+
+          <span class="item-label">DOLL</span>
+        </a>
+
+        <!-- Hotspot amplop di rak ketiga -->
+        <a
+          class="room-item envelope-item"
+          href="envelope.html"
+          aria-label="Open birthday letter"
+          target="_blank"
+          rel="opener"
+        >
+          <span class="item-glow"></span>
+
+          <!-- Disembunyikan lewat CSS karena sudah ada di bedroom2.png -->
+          <img
+            src="assets/images/envelope.svg"
+            alt="Envelope"
+          />
+
+          <span class="item-label">LETTER</span>
+        </a>
+
+        <!-- Hotspot kue di rak kedua -->
+        <a
+          class="room-item cake-item"
+          href="cake.html"
+          aria-label="Open cake surprise"
+          target="_blank"
+          rel="opener"
+        >
+          <span class="item-glow"></span>
+
+          <!-- Disembunyikan lewat CSS karena sudah ada di bedroom2.png -->
+          <img
+            src="assets/images/cake.svg"
+            alt="Birthday cake"
+          />
+
+          <span class="item-label">CAKE</span>
+        </a>
+
+        <!-- Kunci tetap memakai SVG karena bisa diambil -->
+        <button
+          id="keyItem"
+          class="room-item key-item"
+          type="button"
+          aria-label="Pick up the old key"
+        >
+          <span class="item-glow"></span>
+
+          <img
+            src="assets/images/key.svg"
+            alt="Old key"
+          />
+
+          <span class="item-label">OLD KEY</span>
+        </button>
+
+        <!-- Tombol menuju hallway -->
+        <button
+          id="giftDoor"
+          class="door-hotspot hotspot gift-door"
+          type="button"
+          aria-label="Go to the hallway"
+        >
+          <img
+            src="assets/images/door.svg"
+            alt=""
+          />
+
+          <span>HALLWAY</span>
+        </button>
+      </section>
+
+      <section id="sceneChase" class="scene scene-chase">
+        <div id="chaseTimer" class="chase-timer hidden" aria-live="polite">
+          <span>TIME LEFT</span>
+          <strong id="chaseTimerValue">00:15</strong>
+        </div>
+
+        <div id="ghostReveal" class="ghost-reveal" aria-hidden="true">
+          <img id="ghostImage" src="assets/images/ghost-woman.png" alt="A ghost woman behind you" />
+        </div>
+
+        <button id="lookBackButton" class="danger-button look-back hidden" type="button">LOOK BACK</button>
+
+        <div id="unlockPanel" class="unlock-panel hidden">
+          <p id="unlockInstruction" class="unlock-instruction">Quick! Hold the door!</p>
+          <button id="holdDoor" class="hold-button" type="button" aria-keyshortcuts="Space">
+            <span class="hold-ring" aria-hidden="true"></span>
+            <span class="hold-content">
+              <img src="assets/images/key.svg" alt="" />
+              <strong>HOLD TO UNLOCK</strong>
+              <small>Hold mouse or SPACE for 4 seconds</small>
+            </span>
+          </button>
+          <div class="progress-track" aria-hidden="true">
+            <div id="unlockProgress" class="progress-fill"></div>
+          </div>
+          <span id="progressNumber" class="progress-number">0%</span>
+        </div>
+      </section>
+
+      <section id="sceneSafe" class="scene scene-safe">
+        <div class="safe-door-shadow"></div>
+        <button id="finalLight" class="light-switch hotspot hidden" type="button" aria-label="Turn on the final room light">
+          <span class="bulb">💡</span>
+          <span>TURN ON THE LIGHT</span>
+        </button>
+      </section>
+
+      <section id="sceneFinal" class="scene scene-final">
+        <img class="flag flag-left" src="assets/images/balloon-left.png" alt="" />
+        <img class="flag flag-right" src="assets/images/balloon-right.png" alt="" />
+        <div id="confettiLayer" class="confetti-layer" aria-hidden="true"></div>
+        <div class="celebration-light" aria-hidden="true"></div>
+
+        <div id="finalCard" class="final-card">
+          <p class="eyebrow">THE FINAL ROOM</p>
+          <h2>SURPRISE, MAEGHAN!</h2>
+          <p class="roast">You really thought another ghost was waiting here, didn't you?</p>
+          <p class="wish-copy">
+            Happy Birthday. Thank you for being exactly who you are. I hope this year gives you
+            more reasons to smile, more moments worth remembering, and people who always make you feel at home.
+          </p>
+          <p class="signature">This entire room was waiting for you. ♡</p>
+          <div class="final-actions">
+            <button id="continueFinal" class="secondary-button" type="button">CONTINUE</button>
+          </div>
+        </div>
+
+        <div class="final-bed-gifts" role="img" aria-label="A doll, birthday cake, and letter resting on the bed">
+          <img class="final-bed-gift final-bed-doll" src="assets/images/doll.svg" alt="" />
+          <img class="final-bed-gift final-bed-cake" src="assets/images/cake.svg" alt="" />
+          <img class="final-bed-gift final-bed-envelope" src="assets/images/envelope.svg" alt="" />
+        </div>
+
+        <div id="finalEnding" class="final-ending" aria-hidden="true">
+          <h2>THE END</h2>
+
+          <div class="final-credits">
+            <p class="final-credit-line final-credit-author" style="--credit-delay: 1s;">
+              Created by someone that you know hehe
+            </p>
+            <p class="final-credit-line final-credit-love" style="--credit-delay: 1.55s;">
+              Created with love 💖.
+            </p>
+            <p class="final-credit-line" style="--credit-delay: 2.2s;">
+              I hope you enjoy the story game haha.
+            </p>
+            <p class="final-credit-line final-credit-birthday" style="--credit-delay: 2.85s;">
+              Happy sweet seventeen Maeghan!!!
+            </p>
+            <p class="final-credit-line" style="--credit-delay: 3.55s;">
+              Enjoy your special day 😜.
+            </p>
+            <p class="final-credit-line final-credit-divider" style="--credit-delay: 4.2s;" aria-hidden="true">
+              Cheer up and Have fun!!
+            </p>
+          </div>
+
+          <button id="restartGame" class="secondary-button final-restart" type="button">PLAY AGAIN</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="dialogueBox" class="dialogue-box hidden">
+      <span id="speaker" class="speaker">ME</span>
+      <p id="dialogueText" class="dialogue-text"></p>
+      <span class="continue-hint">click to continue</span>
+    </div>
+
+    <div id="toast" class="toast" role="status"></div>
+
+    <div id="gameOverModal" class="game-over-modal" hidden>
+      <div class="game-over-card" role="alertdialog" aria-modal="true" aria-labelledby="gameOverTitle">
+        <p class="eyebrow">SHE CAUGHT YOU</p>
+        <h2 id="gameOverTitle">GAME OVER</h2>
+        <p>You ran out of time. Do not let her get that close again.</p>
+        <button id="gameOverRestart" class="danger-button" type="button">RESTART FROM THE BEGINNING</button>
+      </div>
+    </div>
+
+    <div id="watchOverlay" class="watch-overlay" hidden>
+      <button id="closeWatch" class="close-watch" type="button" aria-label="Close the final surprise">×</button>
+      <iframe id="watchFrame" title="Birthday memory reel" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <audio id="switchAudio" preload="auto" src="assets/audio/switch.mp3"></audio>
+  <audio id="doorAudio" preload="auto" src="assets/audio/door.mp3"></audio>
+  <audio id="hauntedAudio" preload="auto" loop src="assets/audio/haunted-bgm.mp3"></audio>
+  <audio id="blastAudio" preload="auto" src="assets/audio/blast.mp3"></audio>
+  <audio id="hummingAudio" preload="auto" loop src="assets/audio/humming.mp3"></audio>
+  <audio id="footstepsAudio" preload="auto" loop src="assets/audio/footsteps.mp3"></audio>
+  <audio id="aboutYouAudio" preload="auto" loop src="assets/audio/about-you.mp3"></audio>
+  <audio id="radioAudio" preload="auto" loop src="assets/audio/broken-radio.mp3"></audio>
+  <audio id="jumpscareAudio" preload="auto" src="assets/audio/jumpscare.mp3"></audio>
+
+  <script src="script/game.js?v=final-ending-1"></script>
+</body>
+</html>
