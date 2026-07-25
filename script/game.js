@@ -382,7 +382,8 @@
 
     if (!sessionStorage.getItem("maeghanGiftIntroSeen")) {
       await say([
-        "We're back. Wait... these things weren't here before. Maybe this room wants to show you something."
+        "We're back. Wait... these things weren't here before. Maybe this room wants to show you something.",
+        "This room is kinda quiet.. You might wanna turn on the radio first."
       ], "ME");
       sessionStorage.setItem("maeghanGiftIntroSeen", "true");
     }
