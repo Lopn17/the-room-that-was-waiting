@@ -11,6 +11,10 @@
   const toast = document.getElementById("toast");
 
   const startGameButton = document.getElementById("startGame");
+  const assetLoader = document.getElementById("assetLoader");
+  const assetLoadingText = document.getElementById("assetLoadingText");
+  const assetLoadingPercent = document.getElementById("assetLoadingPercent");
+  const assetLoadingBar = document.getElementById("assetLoadingBar");
   const lightSwitchDark = document.getElementById("lightSwitchDark");
   const bedroomDoor = document.getElementById("bedroomDoor");
   const returnRoom = document.getElementById("returnRoom");
@@ -55,6 +59,189 @@
     jumpscare: document.getElementById("jumpscareAudio")
   };
 
+  const MAIN_GAME_IMAGES = [
+    "assets/images/bedroom1.webp",
+    "assets/images/bedroom2.webp",
+
+    "assets/images/hallway-haunted.webp",
+    "assets/images/no-ghost-hallway.webp",
+    "assets/images/final-door-hallway.webp",
+    "assets/images/lookback-hallway.webp",
+
+    "assets/images/final-room.webp",
+    "assets/images/ghost-woman.webp",
+    "assets/images/jumpscare-ghost.webp",
+
+    "assets/images/balloon-left.webp",
+    "assets/images/balloon-right.webp",
+
+    "assets/images/door.svg",
+    "assets/images/key.svg",
+    "assets/images/doll.svg",
+    "assets/images/cake.svg",
+    "assets/images/envelope.svg",
+    "assets/images/radio-broken.svg"
+  ];
+
+  const MAIN_GAME_AUDIO = Object.values(audio).map((element) => ({
+    element,
+    src: element.dataset.src
+  }));
+
+  /*
+    Blob URL disimpan agar audio yang sudah di-download
+    tidak perlu diminta lagi saat dimainkan.
+  */
+  const loadedAudioUrls = [];
+
+  function preloadImage(src) {
+    return new Promise((resolve) => {
+      const image = new Image();
+
+      image.decoding = "async";
+
+      const finish = async (success) => {
+        if (success) {
+          try {
+            await image.decode();
+          } catch (error) {
+            // Gambar tetap bisa digunakan walaupun decode() tidak didukung.
+          }
+        }
+
+        resolve({ src, success });
+      };
+
+      image.onload = () => finish(true);
+      image.onerror = () => finish(false);
+      image.src = src;
+    });
+  }
+
+  async function preloadAudioAsset({ element, src }) {
+    if (!element || !src) return { src, success: false };
+
+    try {
+      const response = await fetch(src, { cache: "force-cache" });
+
+      if (!response.ok) throw new Error(`Failed to preload: ${src}`);
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+
+      loadedAudioUrls.push(objectUrl);
+
+      /*
+        Kalau preload lewat batas waktu dan track ini sudah keburu diputar
+        dari file aslinya, jangan ditukar ke blob supaya audio tidak terpotong.
+      */
+      if (element.src && !element.paused) {
+        return { src, success: true };
+      }
+
+      element.src = objectUrl;
+      element.load();
+
+      return { src, success: true };
+    } catch (error) {
+      /*
+        Fallback:
+        kalau fetch gagal, audio tetap memakai file aslinya.
+      */
+      element.src = src;
+      element.preload = "auto";
+      element.load();
+
+      return { src, success: false };
+    }
+  }
+
+  function updateLoadingProgress(completed, total) {
+    const percent = Math.round((completed / total) * 100);
+
+    assetLoadingPercent.textContent = `${percent}%`;
+    assetLoadingBar.style.width = `${percent}%`;
+    startGameButton.textContent = `LOADING... ${percent}%`;
+
+    if (percent < 30) {
+      assetLoadingText.textContent = "Preparing the room...";
+    } else if (percent < 60) {
+      assetLoadingText.textContent = "Waking up the ghosts...";
+    } else if (percent < 90) {
+      assetLoadingText.textContent = "Hiding the birthday surprise...";
+    } else {
+      assetLoadingText.textContent = "Almost ready...";
+    }
+  }
+
+  function getStartButtonLabel() {
+    if (state.checkpoint === "gift-room") return "RETURN TO THE ROOM";
+    if (state.checkpoint === "final-room") return "RETURN TO THE SURPRISE";
+    return "ENTER THE ROOM";
+  }
+
+  async function preloadAllGameAssets() {
+    startGameButton.disabled = true;
+
+    const jobs = [
+      ...MAIN_GAME_IMAGES.map((src) => () => preloadImage(src)),
+      ...MAIN_GAME_AUDIO.map((asset) => () => preloadAudioAsset(asset))
+    ];
+
+    const total = jobs.length;
+    let completed = 0;
+    let currentJob = 0;
+
+    updateLoadingProgress(0, total);
+
+    /*
+      Maksimal 6 file bersamaan.
+      Lebih stabil dibanding mengunduh semuanya sekaligus.
+    */
+    async function worker() {
+      while (true) {
+        const jobIndex = currentJob;
+        currentJob += 1;
+
+        if (jobIndex >= total) return;
+
+        let timeoutId = 0;
+
+        try {
+          /*
+            Timeout 30 detik per resource.
+            Kalau satu file bermasalah, loader tidak macet selamanya.
+          */
+          await Promise.race([
+            jobs[jobIndex](),
+            new Promise((resolve) => {
+              timeoutId = window.setTimeout(resolve, 30000);
+            })
+          ]);
+        } catch (error) {
+          console.warn("Asset preload failed:", error);
+        } finally {
+          clearTimeout(timeoutId);
+        }
+
+        completed += 1;
+        updateLoadingProgress(completed, total);
+      }
+    }
+
+    const workerCount = Math.min(6, total);
+
+    await Promise.all(Array.from({ length: workerCount }, () => worker()));
+
+    assetLoadingBar.style.width = "100%";
+    assetLoadingPercent.textContent = "100%";
+    assetLoadingText.textContent = "Everything is ready.";
+    assetLoader.classList.add("is-ready");
+
+    startGameButton.disabled = false;
+    startGameButton.textContent = getStartButtonLabel();
+  }
+
   let soundEnabled = true;
   let busy = false;
   let toastTimer = null;
@@ -97,6 +284,11 @@
   async function safePlay(track, { restart = false } = {}) {
     if (!soundEnabled || !track) return;
     try {
+      // Jaring pengaman: kalau preload belum sempat mengisi src, pakai file aslinya.
+      if (!track.src && track.dataset.src) {
+        track.src = track.dataset.src;
+        track.preload = "auto";
+      }
       if (restart) track.currentTime = 0;
       await track.play();
     } catch (error) {
@@ -427,7 +619,7 @@
     gameOverModal.hidden = true;
     sceneChase.classList.remove("is-final-door", "is-looking-back", "is-jumpscare", "is-panicking");
     ghostReveal.classList.remove("is-visible", "is-approaching", "is-jumpscare");
-    ghostImage.src = "assets/images/ghost-woman.png";
+    ghostImage.src = "assets/images/ghost-woman.webp";
     hide(unlockPanel);
     hide(lookBackButton);
     stopTrack(audio.haunted, true);
@@ -506,7 +698,7 @@
       startChaseCountdown();
       audio.footsteps.playbackRate = 1;
       void safePlay(audio.footsteps, { restart: true });
-      ghostImage.src = "assets/images/ghost-woman.png";
+      ghostImage.src = "assets/images/ghost-woman.webp";
       ghostReveal.classList.remove("is-visible", "is-approaching", "is-jumpscare");
       void ghostReveal.offsetWidth;
       ghostReveal.classList.add("is-visible", "is-approaching");
@@ -556,7 +748,7 @@
     cancelDialogue();
     sceneChase.classList.remove("is-final-door", "is-panicking");
     sceneChase.classList.add("is-looking-back", "is-jumpscare");
-    ghostImage.src = "assets/images/jumpscare-ghost.png";
+    ghostImage.src = "assets/images/jumpscare-ghost.webp";
     ghostReveal.classList.remove("is-approaching");
     ghostReveal.classList.add("is-visible", "is-jumpscare");
     stopTrack(audio.humming, true);
@@ -832,12 +1024,15 @@
     });
   });
 
+  window.addEventListener("beforeunload", () => {
+    loadedAudioUrls.forEach((url) => URL.revokeObjectURL(url));
+  });
+
   updateInventory();
   createConfetti(75);
 
-  if (state.checkpoint === "gift-room") {
-    startGameButton.textContent = "RETURN TO THE ROOM";
-  } else if (state.checkpoint === "final-room") {
-    startGameButton.textContent = "RETURN TO THE SURPRISE";
-  }
+  /*
+    Tombol ENTER baru aktif setelah semua resource utama siap.
+  */
+  preloadAllGameAssets();
 })();

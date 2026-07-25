@@ -334,7 +334,7 @@ a:focus-visible {
 .scene-bedroom {
   background:
     #17113c
-    url("../assets/images/bedroom1.png")
+    url("../assets/images/bedroom1.webp")
     center center / cover no-repeat;
 }
 
@@ -342,7 +342,7 @@ a:focus-visible {
 .scene-gift-room {
   background:
     #17113c
-    url("../assets/images/bedroom2.png")
+    url("../assets/images/bedroom2.webp")
     center center / cover no-repeat;
 }
 
@@ -439,7 +439,7 @@ a:focus-visible {
 }
 
 .scene-haunted {
-  background: #071020 url("../assets/images/hallway-haunted.png") center center / cover no-repeat;
+  background: #071020 url("../assets/images/hallway-haunted.webp") center center / cover no-repeat;
 }
 
 .scene-haunted::before {
@@ -803,7 +803,7 @@ a:focus-visible {
 .scene-chase {
   background:
     linear-gradient(rgba(3, 5, 12, .08), rgba(2, 3, 9, .2)),
-    url("../assets/images/no-ghost-hallway.png") center / cover no-repeat,
+    url("../assets/images/no-ghost-hallway.webp") center / cover no-repeat,
     #060711;
 }
 
@@ -820,14 +820,14 @@ a:focus-visible {
 .scene-chase::before {
   background:
     linear-gradient(rgba(3, 5, 12, .08), rgba(2, 3, 9, .2)),
-    url("../assets/images/final-door-hallway.png") center / cover no-repeat;
+    url("../assets/images/final-door-hallway.webp") center / cover no-repeat;
   transition: opacity .48s ease;
 }
 
 .scene-chase::after {
   background:
     linear-gradient(rgba(3, 5, 12, .1), rgba(2, 3, 9, .24)),
-    url("../assets/images/lookback-hallway.png") center / cover no-repeat;
+    url("../assets/images/lookback-hallway.webp") center / cover no-repeat;
   transition: opacity .28s ease;
 }
 
@@ -1158,7 +1158,7 @@ a:focus-visible {
   place-items: center;
   background:
     linear-gradient(rgba(24, 10, 34, .18), rgba(11, 6, 20, .32)),
-    url("../assets/images/final-room.png") center / cover no-repeat,
+    url("../assets/images/final-room.webp") center / cover no-repeat,
     #120a1c;
 }
 
@@ -1624,6 +1624,84 @@ a:focus-visible {
   font-size: 30px;
   line-height: 1;
   cursor: pointer;
+}
+
+/* =========================================================
+   ASSET PRELOADER
+   ========================================================= */
+
+.asset-loader {
+  width: min(420px, 90%);
+  margin: 25px auto 20px;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.asset-loader-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  margin-bottom: 9px;
+
+  color: rgba(235, 228, 255, 0.72);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.asset-loading-track {
+  position: relative;
+
+  width: 100%;
+  height: 8px;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(213, 197, 255, 0.18);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.asset-loading-bar {
+  width: 0%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7353ce,
+      #d2bfff,
+      #ff9dc9
+    );
+
+  box-shadow:
+    0 0 15px rgba(194, 164, 255, 0.65);
+
+  transition: width 0.25s ease;
+}
+
+.asset-loader.is-ready {
+  opacity: 0.75;
+}
+
+.asset-loader.is-ready .asset-loading-bar {
+  box-shadow:
+    0 0 18px rgba(174, 255, 198, 0.65);
+}
+
+.primary-button:disabled {
+  opacity: 0.45;
+  cursor: wait;
+  pointer-events: none;
+  filter: grayscale(0.4);
+  animation: none;
 }
 
 @media (max-height: 720px) {
