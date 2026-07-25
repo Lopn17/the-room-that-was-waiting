@@ -1442,7 +1442,7 @@ a:focus-visible {
 }
 
 .scene-final.is-ended .final-credits {
-  animation: finalCreditsOut .8s 33s ease forwards;
+  animation: finalCreditsOut .8s 100s ease forwards;
 }
 
 @keyframes finalTitleIn {
