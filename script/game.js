@@ -127,7 +127,7 @@
   setTrackVolume(audio.switch, 0.72);
   setTrackVolume(audio.blast, 0.5);
   setTrackVolume(audio.radio, 0.60);
-  setTrackVolume(audio.jumpscare, 0.90);
+  setTrackVolume(audio.jumpscare, 0.95);
 
   function showToast(message, duration = 2800) {
     clearTimeout(toastTimer);
