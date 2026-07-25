@@ -381,22 +381,27 @@
     await sleep(700);
 
     if (!sessionStorage.getItem("maeghanGiftIntroSeen")) {
-      showToast(
-        "We're back. Wait... these things weren't here before. Maybe this room wants to show you something.",
-        5200
-      );
+      await say([
+        "We're back. Wait... these things weren't here before. Maybe this room wants to show you something."
+      ], "ME");
       sessionStorage.setItem("maeghanGiftIntroSeen", "true");
     }
 
     busy = false;
   }
 
-  function collectKey() {
+  async function collectKey() {
     if (state.hasKey || busy) return;
+    busy = true;
     state.hasKey = true;
     localStorage.setItem("maeghanHasKey", "true");
     updateInventory();
-    showToast("You found an old key. Maybe you should try the hallway again.", 3900);
+
+    try {
+      await say(["You found an old key. Maybe we should try the hallway again."], "ME");
+    } finally {
+      busy = false;
+    }
   }
 
   async function tryGiftDoor() {
